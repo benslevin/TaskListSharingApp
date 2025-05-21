@@ -1,10 +1,91 @@
 body {
-    font-family: sans-serif;
-    max-width: 400px;
-    margin: 20px auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-image: url('assets/james.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #fff;
   }
+  
+  .app-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 15px;
+  }
+  
+  h1, h2 {
+    text-align: center;
+  }
+  
+  .input-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  input, select, button {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+  }
+  
+  input[type="text"], select {
+    flex: 1;
+  }
+  
+  button {
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  .task-list-section, #completedTasks {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
   li {
-    list-style: none;
-    margin: 5px 0;
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .task-controls button {
+    margin-left: 0.5rem;
+  }
+  
+  table {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  th, td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .hidden {
+    display: none;
   }
   
