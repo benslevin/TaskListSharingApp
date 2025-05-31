@@ -1,29 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Task Manager</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+    .app-container {
+      max-width: 800px;
+      margin: auto;
+      padding: 1rem;
+      box-sizing: border-box;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+    }
+    .input-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .input-row input,
+    .input-row select,
+    .input-row button {
+      flex: 1 1 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    @media (min-width: 600px) {
+      .input-row input,
+      .input-row select {
+        flex: 1 1 auto;
+      }
+      .input-row button {
+        flex: 0 0 auto;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="app-container">
     <h1>📋 Task Manager</h1>
 
     <div class="input-row">
-      <input type="text" id="taskInput" placeholder="Add a new task..." />
       <select id="categorySelect">
-        <option value="General">General</option>
-        <option value="Groceries">Groceries</option>
+        <option value="General">כללי</option>
+        <option value="Groceries">רשימת קניות</option>
       </select>
-      <input type="text" id="productInput" placeholder="Product" class="hidden" />
-      <input type="text" id="amountInput" placeholder="Amount" class="hidden" />
-      <button onclick="addTask()">➕ Add</button>
+
+      <input type="text" id="taskInput" placeholder="משימה חדשה...." />
+      <input type="text" id="productInput" placeholder="מוצר" class="hidden" />
+      <input type="number" id="amountInput" placeholder="כמות" class="hidden" />
+      <button onclick="addTask()">➕ הוסף</button>
     </div>
 
     <div id="taskLists"></div>
 
-    <h2>✅ Completed Tasks</h2>
+    <h2>✅ משימות שהושלמו</h2>
     <div id="completedTasks"></div>
   </div>
 

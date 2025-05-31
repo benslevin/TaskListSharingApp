@@ -4,9 +4,13 @@ const taskInput = document.getElementById("taskInput");
 const categorySelect = document.getElementById("categorySelect");
 const productInput = document.getElementById("productInput");
 const amountInput = document.getElementById("amountInput");
+const CATEGORY_LABELS = {
+  "Groceries": "רשימת קניות",
+  "General": "כללי"
+};
 
 categorySelect.addEventListener("change", () => {
-  const isGrocery = categorySelect.value === "Groceries";
+  const isGrocery = categorySelect.value === CATEGORY_LABELS.Groceries;
   productInput.classList.toggle("hidden", !isGrocery);
   amountInput.classList.toggle("hidden", !isGrocery);
   taskInput.classList.toggle("hidden", isGrocery);
@@ -23,8 +27,8 @@ function addTask() {
   const product = productInput.value.trim();
   const amount = amountInput.value.trim();
 
-  if ((category === "Groceries" && (!product || !amount)) ||
-      (category !== "Groceries" && !text)) return;
+  if ((category === CATEGORY_LABELS.Groceries && (!product || !amount)) ||
+      (category !== CATEGORY_LABELS.Groceries && !text)) return;
 
   const newTask = {
     id: Date.now(),
@@ -64,7 +68,7 @@ function editTask(id) {
   const task = tasks.find(t => t.id === id);
   const newText = prompt("Edit task", task.text || task.product);
   if (newText !== null) {
-    if (task.category === "Groceries") {
+    if (task.category === CATEGORY_LABELS.Groceries) {
       const newAmount = prompt("Edit amount", task.amount);
       if (newAmount !== null) {
         task.product = newText;
@@ -98,15 +102,15 @@ function renderTasks() {
     section.className = "task-list-section";
 
     const title = document.createElement("h2");
-    title.textContent = category;
+    title.textContent = CATEGORY_LABELS[category] || category;
     section.appendChild(title);
 
     const categoryTasks = tasks.filter(t => t.category === category && !t.completedAt);
 
-    if (category === "Groceries") {
+    if (category === CATEGORY_LABELS.Groceries) {
       const table = document.createElement("table");
       const thead = document.createElement("thead");
-      thead.innerHTML = "<tr><th>✔</th><th>Product</th><th>Amount</th><th>Actions</th></tr>";
+      thead.innerHTML = "<tr><th>✔</th><th>מוצר</th><th>כמות</th><th>פעולות</th></tr>";
       table.appendChild(thead);
 
       const tbody = document.createElement("tbody");
@@ -151,46 +155,55 @@ function renderTasks() {
       table.appendChild(tbody);
       section.appendChild(table);
     } else {
-      const ul = document.createElement("ul");
+      const table = document.createElement("table");
+      const thead = document.createElement("thead");
+      thead.innerHTML = "<tr><th>✔</th><th>משימה</th><th style='width: 120px;'>פעולות</th></tr>";
+      table.appendChild(thead);
+
+      const tbody = document.createElement("tbody");
 
       categoryTasks.forEach(task => {
-        const li = document.createElement("li");
+        const tr = document.createElement("tr");
 
+        const checkboxTd = document.createElement("td");
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.checked = task.completed;
         checkbox.onchange = () => toggleTask(task.id);
-        li.appendChild(checkbox);
+        checkboxTd.appendChild(checkbox);
+        tr.appendChild(checkboxTd);
 
-        const span = document.createElement("span");
-        span.textContent = task.text;
-        li.appendChild(span);
+        const taskTd = document.createElement("td");
+        taskTd.textContent = task.text;
+        tr.appendChild(taskTd);
 
-        const controls = document.createElement("div");
-        controls.className = "task-controls";
+        const actionsTd = document.createElement("td");
+        actionsTd.className = "task-controls";
+        actionsTd.style.textAlign = "center";
 
         if (task.completed && !task.completedAt) {
           const moveBtn = document.createElement("button");
           moveBtn.textContent = "➡️";
           moveBtn.onclick = () => moveToCompleted(task.id);
-          controls.appendChild(moveBtn);
+          actionsTd.appendChild(moveBtn);
         }
 
         const editBtn = document.createElement("button");
         editBtn.textContent = "✏️";
         editBtn.onclick = () => editTask(task.id);
-        controls.appendChild(editBtn);
+        actionsTd.appendChild(editBtn);
 
         const delBtn = document.createElement("button");
         delBtn.textContent = "🗑️";
         delBtn.onclick = () => deleteTask(task.id);
-        controls.appendChild(delBtn);
+        actionsTd.appendChild(delBtn);
 
-        li.appendChild(controls);
-        ul.appendChild(li);
+        tr.appendChild(actionsTd);
+        tbody.appendChild(tr);
       });
 
-      section.appendChild(ul);
+      table.appendChild(tbody);
+      section.appendChild(table);
     }
 
     container.appendChild(section);
@@ -199,6 +212,29 @@ function renderTasks() {
   renderCompletedTasks();
 }
 
+function exportCompletedTasks() {
+  const completed = tasks.filter(t => t.completedAt);
+  if (completed.length === 0) return;
+
+  const blob = new Blob([JSON.stringify(completed, null, 2)], {
+    type: "application/json",
+  });
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `completed_tasks_${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  // Clear completed tasks
+  tasks = tasks.filter(t => !t.completedAt);
+  saveTasks();
+  renderTasks();
+}
+
+
+
 function renderCompletedTasks() {
   const container = document.getElementById("completedTasks");
   container.innerHTML = "";
@@ -206,7 +242,7 @@ function renderCompletedTasks() {
   const completed = tasks.filter(t => t.completedAt);
 
   if (completed.length === 0) {
-    container.innerHTML = "<p>No completed tasks yet.</p>";
+    container.innerHTML = "<p>אין משימות שהושלמו</p>";
     return;
   }
 
@@ -220,6 +256,52 @@ function renderCompletedTasks() {
   });
 
   container.appendChild(ul);
+
+  // ➕ Add Export Button in Bottom-Left
+  const exportWrapper = document.createElement("div");
+  exportWrapper.style.display = "flex";
+  exportWrapper.style.justifyContent = "flex-start";
+  exportWrapper.style.marginTop = "10px";
+
+  const exportBtn = document.createElement("button");
+  exportBtn.textContent = "📁 ייצוא JSON";
+  exportBtn.onclick = exportCompletedTasks;
+
+  exportWrapper.appendChild(exportBtn);
+  container.appendChild(exportWrapper);
 }
 
 renderTasks();
+
+function applyResponsiveStyles() {
+  const isMobile = window.innerWidth <= 600;
+
+  document.body.classList.toggle("mobile", isMobile);
+
+  const elements = document.querySelectorAll("input, select, button, h1, h2");
+  elements.forEach(el => {
+    el.style.fontSize = isMobile ? "1.1rem" : "1rem";
+  });
+
+  const containers = document.querySelectorAll(".task-list-section, .input-row");
+  containers.forEach(el => {
+    el.style.flexDirection = isMobile ? "column" : "row";
+  });
+}
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    const isGrocery = categorySelect.value === "Groceries";
+    const isValid =
+      (isGrocery && productInput.value.trim() && amountInput.value.trim()) ||
+      (!isGrocery && taskInput.value.trim());
+
+    if (isValid) {
+      event.preventDefault(); // prevent accidental form submissions
+      addTask();
+    }
+  }
+});
+
+window.addEventListener("resize", applyResponsiveStyles);
+window.addEventListener("load", applyResponsiveStyles);

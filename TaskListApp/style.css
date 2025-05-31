@@ -1,91 +1,154 @@
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-image: url('assets/james.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: #fff;
-  }
-  
-  .app-container {
-    max-width: 800px;
-    margin: auto;
-    padding: 2rem;
-    background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 15px;
-  }
-  
-  h1, h2 {
-    text-align: center;
-  }
-  
+  direction: rtl;
+  text-align: right;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-image: url('assets/james.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #fff;
+}
+
+.app-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 15px;
+  box-sizing: border-box;
+}
+
+h1, h2 {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-direction: row-reverse;
+}
+
+#categorySelect {
+  flex: 0 0 150px; /* fixed max width */
+  max-width: 150px;
+}
+
+#taskInput {
+  flex: 1 1 auto; /* grows to fill available space */
+  min-width: 100px;
+}
+
+#productInput {
+  flex: 1 1 auto;
+  min-width: 100px;
+}
+
+#amountInput {
+  flex: 0 0 80px; /* fixed smaller width */
+  max-width: 80px;
+}
+
+input, select, button {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
   .input-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+    flex-direction: column;
   }
-  
-  input, select, button {
-    padding: 0.5rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: none;
-  }
-  
-  input[type="text"], select {
-    flex: 1;
-  }
-  
-  button {
-    background-color: #4caf50;
-    color: white;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  .task-list-section, #completedTasks {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  ul {
-    list-style-type: none;
-    padding-left: 0;
-  }
-  
-  li {
-    margin: 0.5rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .task-controls button {
-    margin-left: 0.5rem;
-  }
-  
-  table {
+
+  #categorySelect,
+  #taskInput,
+  #productInput,
+  #amountInput {
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    border-collapse: collapse;
-    margin-top: 1rem;
+    max-width: 100%;
   }
-  
-  th, td {
-    padding: 0.5rem;
-    border-bottom: 1px solid #ccc;
-    text-align: left;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.task-list-section, #completedTasks {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+li {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.task-controls {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.task-controls button {
+  margin-left: 0.5rem;
+}
+
+table {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+th, td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+}
+
+.hidden {
+  display: none;
+}
+
+body.mobile {
+  font-size: 1.1rem;
+}
+
+body.mobile .input-row {
+  flex-direction: column;
+}
+
+body.mobile input,
+body.mobile select,
+body.mobile button {
+  width: 100%;
+}
+
+li span, td, th {
+  text-align: right;
+}
