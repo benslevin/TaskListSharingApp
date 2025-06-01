@@ -10,7 +10,7 @@ const CATEGORY_LABELS = {
 };
 
 categorySelect.addEventListener("change", () => {
-  const isGrocery = categorySelect.value === CATEGORY_LABELS.Groceries;
+  const isGrocery = categorySelect.value === "Groceries";
   productInput.classList.toggle("hidden", !isGrocery);
   amountInput.classList.toggle("hidden", !isGrocery);
   taskInput.classList.toggle("hidden", isGrocery);
