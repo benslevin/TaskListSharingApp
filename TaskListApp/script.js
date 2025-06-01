@@ -21,14 +21,14 @@ function saveTasks() {
 }
 
 function addTask() {
-  const category = categorySelect.value;
+  const category  = categorySelect.value;
 
   const text = taskInput.value.trim();
   const product = productInput.value.trim();
   const amount = amountInput.value.trim();
 
-  if ((category === CATEGORY_LABELS.Groceries && (!product || !amount)) ||
-      (category !== CATEGORY_LABELS.Groceries && !text)) return;
+  if ((category === "Groceries" && (!product || !amount)) ||
+      (category !== "Groceries" && !text)) return;
 
   const newTask = {
     id: Date.now(),
@@ -107,7 +107,7 @@ function renderTasks() {
 
     const categoryTasks = tasks.filter(t => t.category === category && !t.completedAt);
 
-    if (category === CATEGORY_LABELS.Groceries) {
+    if (category === "Groceries") {
       const table = document.createElement("table");
       const thead = document.createElement("thead");
       thead.innerHTML = "<tr><th>✔</th><th>מוצר</th><th>כמות</th><th>פעולות</th></tr>";
