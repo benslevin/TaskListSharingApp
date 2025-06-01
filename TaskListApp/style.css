@@ -55,6 +55,11 @@ h1, h2 {
 #amountInput {
   flex: 0 0 80px; /* fixed smaller width */
   max-width: 80px;
+  font-size: 1rem;
+  padding: 6px 10px;
+  line-height: 1.2;
+  max-height: 40px;
+  appearance: none;
 }
 
 input, select, button {
